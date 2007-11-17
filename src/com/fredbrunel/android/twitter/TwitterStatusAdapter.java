@@ -1,5 +1,7 @@
 package com.fredbrunel.android.twitter;
 
+import java.util.HashMap;
+
 import android.database.ContentObserver;
 import android.database.DataSetObserver;
 import android.view.KeyEvent;
@@ -7,25 +9,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
+import jtwitter.TwitterEntry;
 import jtwitter.TwitterResponse;
 
 public class TwitterStatusAdapter implements ListAdapter {
 
 	private ViewFactory factory;
 	private TwitterResponse entries;
+	private HashMap<Integer,View> views = new HashMap<Integer,View>();	
 	
 	public TwitterStatusAdapter(ViewFactory factory, TwitterResponse entries) 
 		throws Exception {
 		this.factory = factory;
 		this.entries = entries;
+		
+		// Prefetch views
+		for (int i = 0; i < entries.getNumberOfItems(); i++) {
+			views.put(i, factory.makeUserStatusView(entries.getItemAt(i)));
+		}
 	}
 	
 	public boolean areAllItemsSelectable() {
-		return false;
+		return true;
 	}
 
 	public boolean isSelectable(int position) {
-		return false;
+		return true;
 	}
 
 	public int getCount() {
@@ -54,7 +63,10 @@ public class TwitterStatusAdapter implements ListAdapter {
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		try {
-			return factory.makeUserStatusView(entries.getItemAt(position));
+			if (views.containsKey(position)) { return views.get(position); }
+			View status = factory.makeUserStatusView(entries.getItemAt(position));
+			views.put(position, status);
+			return status;
 		} catch (Exception e) {
 			return convertView; // [FIXME]
 		}
