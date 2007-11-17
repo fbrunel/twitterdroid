@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
-import jtwitter.TwitterEntry;
 import jtwitter.TwitterResponse;
 
 public class TwitterStatusAdapter implements ListAdapter {
