@@ -6,6 +6,7 @@ package jtwitter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.HashMap;
 
@@ -24,8 +25,8 @@ import org.xml.sax.InputSource;
  */
 public class TwitterResponse {
 	
-	private static final String TOP_LEVEL_NODE_NAME = "status";  // the top level <status> node to be read
-	private static final String USER_NODE_NAME = "user";			// the <user> node which has sub-nodes
+	private static final String TOP_LEVEL_NODE_NAME = "status"; // the top level <status> node to be read
+	private static final String USER_NODE_NAME = "user";		// the <user> node which has sub-nodes
 	private static final String TEXT_NODE_NAME = "#text"; 		// basic textual element
 	
 	DocumentBuilder builder;
@@ -43,23 +44,24 @@ public class TwitterResponse {
 	 */
 	public TwitterResponse() 
 		throws SAXException, IOException, ParserConfigurationException {
-		
 		builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 	}
 	
 	public TwitterResponse parse(InputStream xmlStream) 
-		throws SAXException, IOException {
+		throws SAXException, IOException, ParseException, MalformedURLException {
 		
 		Document d = builder.parse(xmlStream);
 		nodes = d.getElementsByTagName(TOP_LEVEL_NODE_NAME);
+		readEntries();
 		return this;
 	}
 	
 	public TwitterResponse parse(String xmlString)
-		throws SAXException, IOException {
+		throws SAXException, IOException, ParseException, MalformedURLException {
 		
 		Document d = builder.parse(new InputSource(new StringReader(xmlString)));
 		nodes = d.getElementsByTagName(TOP_LEVEL_NODE_NAME);
+		readEntries();
 		return this;
 	}
 		
@@ -69,7 +71,7 @@ public class TwitterResponse {
 	 * @return Get the total number of &lt;status&gt; nodes returned
 	 */
 	public int getNumberOfItems() {
-		return nodes.getLength();
+		return entries.size();
 	}
 	
 	/**
@@ -79,13 +81,25 @@ public class TwitterResponse {
 	 * @return TwitterEntry representation of that node
 	 * @throws ParseException 
 	 */
-	public TwitterEntry getItemAt(int index) 
-		throws Exception {
+	public TwitterEntry getItemAt(int index) {
+		return entries.get(index);
+	}
+	
+	//
+	
+	private void readEntries() 
+		throws ParseException, MalformedURLException {
 		
-		if (entries.containsKey(index)) {
-			return entries.get(index);
+		for (int i = 0; i < nodes.getLength(); i++) {
+			entries.put(i, readEntry(i));
 		}
-		
+	}
+	
+	// [FIXME] Need to rewrite the parsing code, does not support #8220; like codes
+	
+	private TwitterEntry readEntry(int index) 
+		throws ParseException, MalformedURLException {
+				
 		TwitterEntry entry = new TwitterEntry();
 		
 		// nd is the list of child nodes of the <status> element with the specified index 
@@ -124,12 +138,10 @@ public class TwitterResponse {
 						value = nd.item(i).getFirstChild().getNodeValue();
 					
 					entry.addAttribute(name, value);
-					//System.out.println(name + " --> " + value);
 				}
 			}
 		}
-		
-		entries.put(index, entry);
+
 		return entry;
 	}
 }
