@@ -6,9 +6,27 @@ import jtwitter.TwitterResponse;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ListView;
+import android.widget.EditText;
 
 public class TwitterDroid extends Activity {	
+	
+	private TwitterConnection twitter = new TwitterConnection();
+	
+	private OnClickListener editTextListener = new OnClickListener() {
+		public void onClick(View v) {
+			EditText edit = (EditText)v;
+			String text = edit.getText().toString();
+			try {
+				String response = twitter.sendTwitterUpdate("fbrunel", "wulfgar", text);
+				edit.setText("");
+			} catch (Exception e) {
+				// nothing;
+			}
+		}
+	};
 	
     /** Called when the activity is first created. */
     @Override
@@ -16,14 +34,14 @@ public class TwitterDroid extends Activity {
         super.onCreate(icicle);
         
         try {
-        	TwitterResponse entries = new TwitterConnection().getFriendsTimeline("fbrunel", "wulfgar");
+        	TwitterResponse entries = twitter.getFriendsTimeline("fbrunel", "wulfgar");
         	
         	setContentView(R.layout.main);
         	
         	ViewFactory factory = new ViewFactory(this);
 
-            //EditText edit = (EditText)findViewById(R.id.message);
-            //edit.setInputMethod(new SendInputMethod());
+            EditText edit = (EditText)findViewById(R.id.message);
+            edit.setOnClickListener(editTextListener);
         
         	ListView list = (ListView)findViewById(R.id.list);
             list.setAdapter(new TwitterStatusAdapter(factory, entries));
