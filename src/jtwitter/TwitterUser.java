@@ -5,6 +5,7 @@
 package jtwitter;
 
 import java.net.URL;
+import java.net.MalformedURLException;
 
 /**
  * TwitterUser Class holds information about a given Twitter user
@@ -22,7 +23,7 @@ public class TwitterUser {
 	public static final String DESCRIPTION = "description";
 	public static final String PROFILE_IMAGE_URL = "profile_image_url";
 	public static final String URL = "url";
-	public static final String IS_PROTECTED = "isProtected";
+	public static final String IS_PROTECTED = "protected";
 	
 	private int id;
 	private String name;
@@ -34,16 +35,16 @@ public class TwitterUser {
 	private boolean isProtected;
 	
 	public TwitterUser(int id, String name, String screenName, String location, String description, String profileImageURL, String url, boolean isProtected) 
-		throws Exception {
+		throws MalformedURLException {
 		
 		this.id = id;
 		this.name = name;
 		this.screenName = screenName;
 		this.location = location;
 		this.description = description;
-		this.profileImageURL = new URL(profileImageURL);
-		this.url = new URL(url);
 		this.isProtected = isProtected;
+		setProfileImageURL(profileImageURL);
+		setUrl(url);
 	}
 	
 	public TwitterUser() {
@@ -93,9 +94,12 @@ public class TwitterUser {
 		return profileImageURL;
 	}
 
-	public void setProfileImageURL(String profileImageURL)
-		throws Exception {
-		this.profileImageURL = new URL(profileImageURL);
+	public void setProfileImageURL(String profileImageURL) {
+		try {
+			this.profileImageURL = new URL(profileImageURL);
+		} catch (MalformedURLException e) {
+			this.profileImageURL = null; // [FIXME] Redirect to a safe URL
+		}
 	}
 
 	public String getScreenName() {
@@ -110,9 +114,12 @@ public class TwitterUser {
 		return url;
 	}
 
-	public void setUrl(String url) 
-		throws Exception {
-		this.url = new URL(url);
+	public void setUrl(String url) {
+		try {
+			this.url = new URL(url);
+		} catch (MalformedURLException e) {
+			this.url = null; // [FIXME] Redirect to a safe URL
+		}
 	}
 
 	@Override
