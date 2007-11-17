@@ -2,16 +2,15 @@ package com.fredbrunel.android.twitter;
 
 import java.io.IOException;
 
-import jtwitter.TwitterResponse;
 import jtwitter.TwitterEntry;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout.LayoutParams;
@@ -22,15 +21,6 @@ public class ViewFactory {
 	
 	public ViewFactory(Context context) {
 		this.context = context;
-	}
-	
-	public View makeTimelineView(TwitterResponse entries)
-		throws Exception {
-		
-    	ListView view = new ListView(context);
-    	view.setVerticalScrollBarEnabled(true); // [FIXME] does not work
-    	view.setAdapter(new TwitterStatusAdapter(this, entries));
-    	return view;
 	}
 	
     public View makeUserStatusView(TwitterEntry entry) 
