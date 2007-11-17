@@ -11,16 +11,16 @@ import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.EditText;
 
-public class TwitterDroid extends Activity {	
+public class StatusList extends Activity {	
 	
-	private TwitterConnection twitter = new TwitterConnection();
+	private TwitterConnection twitter = new TwitterConnection("fbrunel", "wulfgar");
 	
 	private OnClickListener editTextListener = new OnClickListener() {
 		public void onClick(View v) {
 			EditText edit = (EditText)v;
 			String text = edit.getText().toString();
 			try {
-				String response = twitter.sendTwitterUpdate("fbrunel", "wulfgar", text);
+				TwitterResponse status = twitter.updateStatus(text);
 				edit.setText("");
 			} catch (Exception e) {
 				// nothing;
@@ -34,17 +34,15 @@ public class TwitterDroid extends Activity {
         super.onCreate(icicle);
         
         try {
-        	TwitterResponse entries = twitter.getFriendsTimeline("fbrunel", "wulfgar");
+        	TwitterResponse statuses = twitter.getFriendsTimeline();
         	
         	setContentView(R.layout.main);
-        	
-        	ViewFactory factory = new ViewFactory(this);
 
             EditText edit = (EditText)findViewById(R.id.message);
             edit.setOnClickListener(editTextListener);
         
         	ListView list = (ListView)findViewById(R.id.list);
-            list.setAdapter(new TwitterStatusAdapter(factory, entries));
+            list.setAdapter(new StatusAdapter(this, statuses));
 
         } catch (Exception e) {
            	Log.e("Crashed", e.getMessage(), e);

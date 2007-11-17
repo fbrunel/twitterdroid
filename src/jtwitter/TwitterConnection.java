@@ -12,6 +12,10 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.text.ParseException;
+
+import org.xml.sax.SAXException;
+import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.codec.binary.Base64;
 
 /**
@@ -25,8 +29,16 @@ public class TwitterConnection {
 	private static String FRIENDS_TIMELINE_URL = "http://twitter.com/statuses/friends_timeline.xml";
 	private static String UPDATE_URL = "http://twitter.com/statuses/update.xml";
 
+	private String username;
+	private String password;
+	
+	public TwitterConnection(String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
+	
 	/**
-	 * Get the public timeline in XML format. Note that no authentication is necessary here.
+	 * Get the public timeline in XML format.
 	 * 
 	 * @return TwitterResponse containing the public timeline entries  
 	 * @throws IOException
@@ -37,48 +49,41 @@ public class TwitterConnection {
 	}
 	
 	/**
-	 * Get the user's friends timeline (what you see on the homepage) with basic authentication. Pass
-	 * in the username and password that will be used to authenticate.
-	 * 
-	 * @param username String with a valid twitter username
-	 * @param password String with a password for username
+	 * Get the user's friends timeline (what you see on the homepage) with basic authentication.
 	 * 
 	 * @return TwitterResponse containing the friends timeline entries
-	 * 
 	 * @throws IOException
 	 */
-	public TwitterResponse getFriendsTimeline(String username, String password) 
-		throws Exception {
-		URLConnection conn = makeConnection(FRIENDS_TIMELINE_URL, username, password);	
+	public TwitterResponse getFriendsTimeline() 
+		throws ParseException, SAXException, ParserConfigurationException, IOException {
+		URLConnection conn = makeAuthConnection(FRIENDS_TIMELINE_URL);	
 		return new TwitterResponse().parse(getResponseBody(conn));
 	}
 	
-	public InputStream getFriendsTimelineStream(String username, String password) 
+	public InputStream getFriendsTimelineStream() 
 		throws IOException {
-		return makeConnection(FRIENDS_TIMELINE_URL, username, password).getInputStream();
+		return makeAuthConnection(FRIENDS_TIMELINE_URL).getInputStream();
 	}
 	
 	/**
 	 * Update your Twitter status. 
 	 * 
-	 * @param username String with a valid Twitter username
-	 * @param password String with a valid password for username
 	 * @param text String containing text you want to update your status with
-	 * @return String containing XML encoded response from Twitter server 
+	 * @return TwitterResponse containing response from Twitter server 
 	 * @throws IOException
 	 */
-	public String sendTwitterUpdate(String username, String password, String text) 
-		throws IOException {
+	public TwitterResponse updateStatus(String text) 
+		throws ParseException, SAXException, ParserConfigurationException, IOException {
 		
 		if(text.length() > 140) {
 			throw new IllegalArgumentException("Update text is longer than 140 characters");
 		}
 			
 		String status = "status=" + URLEncoder.encode(text, "UTF-8");
-		URLConnection conn = makeConnection(UPDATE_URL, username, password);
+		URLConnection conn = makeAuthConnection(UPDATE_URL);
 		
 		sendPostRequest(conn, status);
-		return getResponseBody(conn);
+		return new TwitterResponse().parse(getResponseBody(conn));
 	}
 	
 	private URLConnection makeConnection(String resource) 
@@ -89,7 +94,7 @@ public class TwitterConnection {
 		return conn;
 	}
 	
-	private URLConnection makeConnection(String resource, String username, String password) 
+	private URLConnection makeAuthConnection(String resource) 
 		throws IOException {
 		
 		// Basic HTTP authentication requires the username:password pair to be base64 encoded
@@ -103,6 +108,7 @@ public class TwitterConnection {
 	private String getResponseBody(URLConnection conn) 
 		throws IOException {
 		
+		// [FIXME] Handle HTTP errors from Twitter
 		BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 	        
 		String line;
@@ -120,6 +126,7 @@ public class TwitterConnection {
 	private void sendPostRequest(URLConnection conn, String data) 
 		throws IOException {
 		
+		// [FIXME] Handle HTTP errors from Twitter
 		OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
         wr.write(data);
         wr.flush();

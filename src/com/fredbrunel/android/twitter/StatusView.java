@@ -14,15 +14,9 @@ import android.widget.TextView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout.LayoutParams;
 
-public class ViewFactory {
-	
-	private Context context;
-	
-	public ViewFactory(Context context) {
-		this.context = context;
-	}
-	
-    public View makeUserStatusView(TwitterEntry entry) 
+public class StatusView {
+		
+    public static View makeView(Context context, TwitterEntry entry) 
     	throws IOException {
 
     	ImageView iv = new ImageView(context);
