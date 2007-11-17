@@ -4,6 +4,7 @@
 
 package jtwitter;
 
+import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -102,7 +103,7 @@ public class TwitterEntry {
 	}
 	
 	public void addAttribute(String key, String value) 
-		throws Exception {
+		throws ParseException, MalformedURLException {
 
 		if(key.equals(CREATED_AT))
 			this.setCreatedAt(makeDate(value));
@@ -122,7 +123,7 @@ public class TwitterEntry {
 			this.getUser().setProfileImageURL(value);
 		else if (key.equals(TwitterUser.URL))
 			this.getUser().setUrl(value);
-		else
+		else if (key.equals(TwitterUser.IS_PROTECTED))
 			this.getUser().setProtected(Boolean.parseBoolean(value));
 	}
 
