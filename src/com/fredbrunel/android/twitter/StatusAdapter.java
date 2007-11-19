@@ -32,7 +32,7 @@ public class StatusAdapter implements ListAdapter {
 		
 		// Create all views
 		for (int i = 0; i < statuses.getNumberOfItems(); i++) {
-			views.put(i, makeView(context, statuses.getItemAt(i)));
+			views.put(i, makeUserStatusView(context, statuses.getItemAt(i)));
 		}
 	}
 	
@@ -81,9 +81,9 @@ public class StatusAdapter implements ListAdapter {
 	}
 	
 	// Create the view for each user status
-	// [FIXME] Should be put as an XML file
+	// [FIXME] Should be put as an XML file (possible?)
 	
-    private View makeView(Context context, TwitterEntry entry) 
+    private View makeUserStatusView(Context context, TwitterEntry entry) 
 		throws IOException {
 
     	ImageView iv = new ImageView(context);

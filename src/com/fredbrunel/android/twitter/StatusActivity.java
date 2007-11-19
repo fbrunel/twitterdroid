@@ -33,6 +33,7 @@ public class StatusActivity extends Activity {
             list.setAdapter(new StatusAdapter(this, statuses));
 
         } catch (Exception e) {
+        	// [FIXME] Handle the exception elsewhere
            	Log.e("Crashed", e.getMessage(), e);
         }
     }
