@@ -12,7 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class StatusList extends Activity {	
+public class StatusActivity extends Activity {	
 	
 	private TwitterConnection twitter = new TwitterConnection("fbrunel", "wulfgar");
 		
