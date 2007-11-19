@@ -14,7 +14,7 @@
     	android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:scrollHorizontally="true"
-        android:hint="@string/edit_placeholder"
+        android:hint="@string/message_placeholder"
         android:singleLine="true"
         android:lines="1"/>
 

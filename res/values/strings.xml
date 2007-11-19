@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TwitterDroid</string>
-    <string name="edit_placeholder">What are you doing?</string>
+    <string name="message_placeholder">What are you doing?</string>
+	<string name="menu_configure">Configure</string>
 </resources>

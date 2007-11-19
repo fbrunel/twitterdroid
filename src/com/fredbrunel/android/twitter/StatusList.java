@@ -2,32 +2,20 @@ package com.fredbrunel.android.twitter;
 
 import jtwitter.TwitterConnection;
 import jtwitter.TwitterResponse;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ListView;
 import android.widget.EditText;
+import android.widget.ListView;
 
 public class StatusList extends Activity {	
 	
 	private TwitterConnection twitter = new TwitterConnection("fbrunel", "wulfgar");
-	
-	private OnClickListener editTextListener = new OnClickListener() {
-		public void onClick(View v) {
-			EditText edit = (EditText)v;
-			String text = edit.getText().toString();
-			try {
-				TwitterResponse status = twitter.updateStatus(text);
-				edit.setText("");
-			} catch (Exception e) {
-				// nothing;
-			}
-		}
-	};
-	
+		
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle icicle) {
@@ -48,6 +36,28 @@ public class StatusList extends Activity {
            	Log.e("Crashed", e.getMessage(), e);
         }
     }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	super.onCreateOptionsMenu(menu);
+    	menu.add(0, 0, R.string.menu_configure).
+    		setShortcut(KeyEvent.KEYCODE_0, 0, KeyEvent.KEYCODE_C);
+    	return true;
+    }
+    
+	OnClickListener editTextListener = new OnClickListener() {
+		public void onClick(View v) {
+			EditText edit = (EditText)v;
+			String text = edit.getText().toString();
+			try {
+				// [TODO] Remove spaces and check for length.
+				TwitterResponse status = twitter.updateStatus(text);
+				edit.setText("");
+			} catch (Exception e) {
+				// [FIXME] Handle error;
+			}
+		}
+	};
 }
 
 // [TODO] Unicode does not seem to be recognized (Japanese characters on the public timeline)
