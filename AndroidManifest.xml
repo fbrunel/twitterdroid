@@ -2,12 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fredbrunel.android.twitter">
     
-    <application android:icon="@drawable/icon">
-        <activity class=".StatusActivity" android:label="@string/app_name">
+    <application android:icon="@drawable/icon" android:label="@string/app_name">
+
+        <activity class="ConfigActivity" android:label="@string/config_activity_name" android:theme="@android:style/Theme.Dialog">
+            <intent-filter>
+                <category android:value="android.intent.category.PREFERENCE" />
+            </intent-filter>
+        </activity>
+
+        <activity class="StatusActivity" android:label="@string/status_activity_name">
             <intent-filter>
                 <action android:value="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest> 

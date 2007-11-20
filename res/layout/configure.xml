@@ -17,7 +17,7 @@
            android:textAlign="end"
            android:padding="3dp" />
 
-       <EditText id="@+id/username"
+       <EditText id="@+id/config_username"
            android:text=""
            android:padding="3dp"
            android:scrollHorizontally="true" />
@@ -30,7 +30,7 @@
            android:textAlign="end"
            android:padding="3dp" />
 
-       <EditText id="@+id/password"
+       <EditText id="@+id/config_password"
            android:text=""
            android:password="true"
            android:padding="3dip"
@@ -46,15 +46,15 @@
     		android:layout_width="fill_parent"
     		android:layout_height="fill_parent">
 
-       		<Button id="@+id/Apply" 
+       		<Button id="@+id/config_apply" 
        			android:layout_width="wrap_content"
         		android:layout_height="wrap_content" 
-        		android:text="OK" />
-        		       		
+        		android:text="Login" />
+      <!--	       		
        		<Button id="@+id/cancel" 
        		    android:layout_width="wrap_content"
         		android:layout_height="wrap_content" 
-       			android:text="Cancel" />
+       			android:text="Cancel" /> -->
 	   	</LinearLayout>
    </TableRow>
 
