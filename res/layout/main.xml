@@ -4,17 +4,17 @@
     android:layout_height="fill_parent"
     android:padding="4px">
 
-    <ListView id="@+id/list"
+    <ListView id="@+id/status_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
         android:paddingBottom="5px"/>
 
-	<EditText id="@+id/message"
+	<EditText id="@+id/status_message"
     	android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:scrollHorizontally="true"
-        android:hint="@string/message_placeholder"
+        android:hint="@string/status_message_placeholder"
         android:singleLine="true"
         android:lines="1"/>
 
