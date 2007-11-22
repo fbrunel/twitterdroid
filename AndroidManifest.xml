@@ -10,7 +10,7 @@
             </intent-filter>
         </activity>
 
-        <activity class="StatusActivity" android:label="@string/status_activity_name">
+        <activity class="StatusActivity" android:label="@string/status_activity_name" android:theme="@android:style/Theme.Black">
             <intent-filter>
                 <action android:value="android.intent.action.MAIN" />
             </intent-filter>

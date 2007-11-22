@@ -15,12 +15,12 @@
            android:text="Username"
            android:textStyle="bold"
            android:textAlign="end"
-           android:padding="3dp" />
+           android:padding="3dip"/>
 
        <EditText id="@+id/config_username"
            android:text=""
-           android:padding="3dp"
-           android:scrollHorizontally="true" />
+           android:padding="3dip"
+           android:singleLine="true"/>
    </TableRow>
 
    <TableRow>
@@ -28,13 +28,13 @@
            android:text="Password"
            android:textStyle="bold"
            android:textAlign="end"
-           android:padding="3dp" />
+           android:padding="3dip" />
 
        <EditText id="@+id/config_password"
            android:text=""
            android:password="true"
            android:padding="3dip"
-           android:scrollHorizontally="true" />
+           android:singleLine="true" />
    </TableRow>
 
    <TableRow>

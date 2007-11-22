@@ -13,6 +13,7 @@
 	<EditText id="@+id/status_message"
     	android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:maxLength="140"
         android:scrollHorizontally="true"
         android:hint="@string/status_message_placeholder"
         android:singleLine="true"

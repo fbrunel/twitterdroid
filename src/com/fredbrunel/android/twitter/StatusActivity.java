@@ -1,44 +1,38 @@
 package com.fredbrunel.android.twitter;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ImageView;
 
-import jtwitter.TwitterConnection;
 import jtwitter.TwitterResponse;
 
 public class StatusActivity extends Activity {	
 	
 	private static final int MENU_CONFIGURE_ID = Menu.FIRST;
-	private TwitterConnection twitter = new TwitterConnection("fbrunel", "wulfgar");
+	private ProgressDialog progress = new ProgressDialog(this);
+	private TwitterService twitter;
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        
-        try {
-        	TwitterResponse statuses = twitter.getFriendsTimeline();
-        	
-        	setContentView(R.layout.main);
-        	//setContentView(R.layout.sample);
-        	
-            EditText edit = (EditText)findViewById(R.id.status_message);
-            edit.setOnClickListener(messageListener);
-        
-        	ListView list = (ListView)findViewById(R.id.status_list);
-            list.setAdapter(new StatusAdapter(this, statuses));
+        setContentView(R.layout.splash);
+    	((ImageView)findViewById(R.id.splash_logo)).setImageResource(R.drawable.logo);
+    }
 
-        } catch (Exception e) {
-        	// [FIXME] Handle the exception elsewhere
-           	Log.e("Crashed", e.getMessage(), e);
-        }
+    @Override
+    public void onStart() {
+    	super.onStart();
+    	//ConfigActivity.requestUpdate(this);
     }
     
     @Override
@@ -53,20 +47,50 @@ public class StatusActivity extends Activity {
     public boolean onOptionsItemSelected(Menu.Item item) {
         switch (item.getId()) {
         case MENU_CONFIGURE_ID:
-        	ConfigActivity.start(this);
+        	ConfigActivity.requestUpdate(this);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }    
-    
-	OnClickListener messageListener = new OnClickListener() {
+    }
+	
+	protected void onActivityResult(int requestCode, int resultCode, String data, Bundle extras) {
+		if (requestCode == ConfigActivity.CONFIG_UPDATE_REQUEST && resultCode == RESULT_OK) {
+			progress = ProgressDialog.show(this, null, "Please wait...", true, false);
+			Config config = Config.getConfig(this);
+			twitter = new TwitterService(config.getUsername(), config.getPassword());
+			twitter.start(handler);
+		}
+	}
+	
+	// Handling Twitter Events
+	
+	private Handler handler = new Handler () {
+		public void handleMessage(Message msg) {
+			updateStatusList((TwitterResponse)msg.obj);
+			progress.dismiss();
+		}
+	};
+	
+	// List View
+	
+	private void updateStatusList(TwitterResponse statuses) {
+		setContentView(R.layout.main);
+	
+		EditText edit = (EditText)findViewById(R.id.status_message);
+		edit.setOnClickListener(messageListener);
+
+		ListView list = (ListView)findViewById(R.id.status_list);
+		list.setAdapter(new StatusAdapter(this, statuses));
+	}
+	
+	private OnClickListener messageListener = new OnClickListener() {
 		public void onClick(View v) {
 			EditText edit = (EditText)v;
 			String text = edit.getText().toString();
 			try {
 				// [TODO] Remove spaces and check for length.
-				TwitterResponse status = twitter.updateStatus(text);
+				//TwitterResponse status = twitter.updateStatus(text); // Thread it!
 				edit.setText("");
 			} catch (Exception e) {
 				// [FIXME] Handle error;

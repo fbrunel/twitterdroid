@@ -26,14 +26,11 @@ public class StatusAdapter implements ListAdapter {
 	private TwitterResponse statuses;
 	private HashMap<Integer,View> views = new HashMap<Integer,View>();	
 	
-	public StatusAdapter(Context context, TwitterResponse statuses) 
-		throws Exception {
+	public StatusAdapter(Context context, TwitterResponse statuses) {
 		this.statuses = statuses;
 		
-		// Create all views
-		for (int i = 0; i < statuses.getNumberOfItems(); i++) {
+		for (int i = 0; i < statuses.getNumberOfItems(); i++)
 			views.put(i, makeUserStatusView(context, statuses.getItemAt(i)));
-		}
 	}
 	
 	public boolean areAllItemsSelectable() {
@@ -83,12 +80,11 @@ public class StatusAdapter implements ListAdapter {
 	// Create the view for each user status
 	// [FIXME] Should be put as an XML file (possible?)
 	
-    private View makeUserStatusView(Context context, TwitterEntry entry) 
-		throws IOException {
+    private View makeUserStatusView(Context context, TwitterEntry entry) {
 
     	ImageView iv = new ImageView(context);
-    	Bitmap photo = BitmapFactory.decodeStream(entry.getUser().getProfileImageURL().openStream());
-	
+    	Bitmap photo = BitmapCache.getInstance().get(entry.getUser().getProfileImageURL());
+
     	iv.setImageBitmap(photo);
     	iv.setScaleType(ScaleType.CENTER);
     	iv.setPadding(0, 4, 4, 0);

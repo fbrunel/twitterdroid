@@ -1,7 +1,6 @@
 package com.fredbrunel.android.twitter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,16 +11,16 @@ import android.widget.EditText;
 
 public class ConfigActivity extends Activity {
 
-	public static final String PREFS = "TwitterDroidPrefs";
+	public static final int CONFIG_UPDATE_REQUEST = 0; // [FIXME] find a better id
 	
 	private Config config;
 	private EditText eUsername;
 	private EditText ePassword;
 	
-	public static void start(Context context) {
-    	Intent configure = new Intent();
-    	configure.setClassName(context, "com.fredbrunel.android.twitter.ConfigActivity");
-    	context.startActivity(configure);
+	public static void requestUpdate(Activity parent) {
+    	Intent configure = new Intent(parent, ConfigActivity.class);
+    	parent.startSubActivity(configure, CONFIG_UPDATE_REQUEST);
+    	//parent.startActivity(configure);
 	}
 	
     @Override
@@ -48,6 +47,7 @@ public class ConfigActivity extends Activity {
         	config.setUsername(eUsername.getText().toString());
         	config.setPassword(ePassword.getText().toString());
         	config.commit();
+        	setResult(RESULT_OK);
             finish();
         }
     };
