@@ -13,10 +13,11 @@
 	<EditText id="@+id/status_message"
     	android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:maxLength="140"
-        android:scrollHorizontally="true"
+		android:textColor="#000"
+		android:textHiliteColor="#aaa"
         android:hint="@string/status_message_placeholder"
-        android:singleLine="true"
-        android:lines="1"/>
+       	android:maxLength="140"
+        android:scrollHorizontally="true"
+        android:singleLine="true"/>
 
 </LinearLayout>
