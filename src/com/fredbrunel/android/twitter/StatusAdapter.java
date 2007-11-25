@@ -1,13 +1,11 @@
 package com.fredbrunel.android.twitter;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
