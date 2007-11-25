@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 public class ConfigActivity extends Activity {
 
-	public static final int CONFIG_UPDATE_REQUEST = 0; // [FIXME] find a better id
+	public static final int CONFIG_UPDATE_REQUEST = 0;
 	
 	private Config config;
 	private EditText eUsername;

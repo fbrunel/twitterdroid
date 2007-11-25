@@ -19,6 +19,8 @@ public class Config {
 		editor = settings.edit();
 	}
 	
+	//
+	
 	public void commit() {
 		editor.commit();
 	}
