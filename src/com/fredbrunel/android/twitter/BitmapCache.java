@@ -30,6 +30,7 @@ public class BitmapCache {
 	}
 		
 	public Bitmap load(URL url) throws IOException {
+		if (containsURL(url)) { return get(url); }
 		Bitmap bitmap = BitmapFactory.decodeStream(url.openStream());
 		cache.put(url, bitmap);
 		return bitmap;
