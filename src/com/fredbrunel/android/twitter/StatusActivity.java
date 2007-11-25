@@ -18,11 +18,12 @@ import jtwitter.TwitterResponse;
 public class StatusActivity extends Activity {	
 	
 	private static final int MENU_CONFIGURE_ID = Menu.FIRST;
-	private ProgressDialog progress = new ProgressDialog(this);
+	private ProgressDialog activeProgress = new ProgressDialog(this);
 	private TwitterService twitter;
 	
-    /** Called when the activity is first created. */
-    @Override
+    // Called when the activity is first created
+
+	@Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.splash);
@@ -60,7 +61,7 @@ public class StatusActivity extends Activity {
     
 	protected void onActivityResult(int requestCode, int resultCode, String data, Bundle extras) {
 		if (requestCode == ConfigActivity.CONFIG_UPDATE_REQUEST && resultCode == RESULT_OK) {
-			progress = ProgressDialog.show(this, null, "Please wait...", true, false);
+			showFetchingProgress();
 			Config config = Config.getConfig(this);
 			twitter = new TwitterService(config.getUsername(), config.getPassword());
 			twitter.requestFriendsTimeline(handler);
@@ -72,19 +73,18 @@ public class StatusActivity extends Activity {
 	private Handler handler = new Handler () {
 		public void handleMessage(Message msg) {
 			if (msg.arg1 == TwitterService.RESPONSE_OK) {
-				if (msg.arg2 == TwitterService.REQUEST_FRIENDS_TIMELINE) {
-					updateStatusListView((TwitterResponse)msg.obj);
-				} else if (msg.arg2 == TwitterService.REQUEST_STATUS_UPDATE) {
-					// [TODO]
-				}
+				switch(msg.arg2) {
+					case TwitterService.REQUEST_FRIENDS_TIMELINE: updateStatusListView((TwitterResponse)msg.obj);
+					case TwitterService.REQUEST_STATUS_UPDATE: clearEditMessageView();
+				}	
 			} else {
 				showAlert("Twitter Error", ((Exception)msg.obj).getMessage(), "Discard", false);
 			}
-			progress.dismiss();
+			hideProgress();
 		}
 	};
 	
-	// Manages list View
+	// Manages Views
 	
 	private void updateStatusListView(TwitterResponse statuses) {
 		setContentView(R.layout.main);
@@ -96,14 +96,32 @@ public class StatusActivity extends Activity {
 		list.setAdapter(new StatusAdapter(this, statuses));
 	}
 	
+	private void clearEditMessageView() {
+		((EditText)findViewById(R.id.status_message)).setText("");
+	}
+	
 	private OnClickListener messageListener = new OnClickListener() {
 		public void onClick(View v) {
 			EditText edit = (EditText)v;
 			String text = edit.getText().toString();
+			showSendingProgress();
 			twitter.requestUpdateStatus(text, handler);
-			edit.setText("");
 		}
 	};
+	
+	// Progress notifications
+	
+	private void showFetchingProgress() { 
+		activeProgress = ProgressDialog.show(this, null, "Please wait...", true, false);
+	}
+	
+	private void showSendingProgress() {
+		activeProgress = ProgressDialog.show(this, null, "Sending your message...", true, false);
+	}
+	
+	private void hideProgress() {
+		activeProgress.dismiss();
+	}
 }
 
 // [TODO] Unicode does not seem to be recognized (Japanese characters on the public timeline)
