@@ -35,6 +35,8 @@ public class StatusActivity extends Activity {
     	//ConfigActivity.requestUpdate(this);
     }
     
+    // Handles menu
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
@@ -54,27 +56,37 @@ public class StatusActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 	
+    // Handles configuration changes
+    
 	protected void onActivityResult(int requestCode, int resultCode, String data, Bundle extras) {
 		if (requestCode == ConfigActivity.CONFIG_UPDATE_REQUEST && resultCode == RESULT_OK) {
 			progress = ProgressDialog.show(this, null, "Please wait...", true, false);
 			Config config = Config.getConfig(this);
 			twitter = new TwitterService(config.getUsername(), config.getPassword());
-			twitter.start(handler);
+			twitter.requestFriendsTimeline(handler);
 		}
 	}
 	
-	// Handling Twitter Events
+	// Handles messages in replies from requests to the Twitter Service
 	
 	private Handler handler = new Handler () {
 		public void handleMessage(Message msg) {
-			updateStatusList((TwitterResponse)msg.obj);
+			if (msg.arg1 == TwitterService.RESPONSE_OK) {
+				if (msg.arg2 == TwitterService.REQUEST_FRIENDS_TIMELINE) {
+					updateStatusListView((TwitterResponse)msg.obj);
+				} else if (msg.arg2 == TwitterService.REQUEST_STATUS_UPDATE) {
+					// [TODO]
+				}
+			} else {
+				showAlert("Twitter Error", ((Exception)msg.obj).getMessage(), "Discard", false);
+			}
 			progress.dismiss();
 		}
 	};
 	
-	// List View
+	// Manages list View
 	
-	private void updateStatusList(TwitterResponse statuses) {
+	private void updateStatusListView(TwitterResponse statuses) {
 		setContentView(R.layout.main);
 	
 		EditText edit = (EditText)findViewById(R.id.status_message);
@@ -88,13 +100,8 @@ public class StatusActivity extends Activity {
 		public void onClick(View v) {
 			EditText edit = (EditText)v;
 			String text = edit.getText().toString();
-			try {
-				// [TODO] Remove spaces and check for length.
-				//TwitterResponse status = twitter.updateStatus(text); // Thread it!
-				edit.setText("");
-			} catch (Exception e) {
-				// [FIXME] Handle error;
-			}
+			twitter.requestUpdateStatus(text, handler);
+			edit.setText("");
 		}
 	};
 }

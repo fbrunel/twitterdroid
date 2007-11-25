@@ -10,13 +10,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
-import java.net.URLConnection;
+import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 import java.text.ParseException;
-
-import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.codec.binary.Base64;
+import org.xml.sax.SAXException;
 
 /**
  * TwitterRequestSender sends http requests to the Twitter web service.
@@ -55,9 +54,8 @@ public class TwitterConnection {
 	 * @throws IOException
 	 */
 	public TwitterResponse getFriendsTimeline() 
-		throws ParseException, SAXException, ParserConfigurationException, IOException {
-		URLConnection conn = makeAuthConnection(FRIENDS_TIMELINE_URL);	
-		return new TwitterResponse().parse(getResponseBody(conn));
+		throws ParseException, SAXException, ParserConfigurationException, IOException, TwitterConnectionException {
+		return new TwitterResponse().parse(getResponseBody(makeAuthConnection(FRIENDS_TIMELINE_URL)));
 	}
 	
 	public InputStream getFriendsTimelineStream() 
@@ -73,63 +71,62 @@ public class TwitterConnection {
 	 * @throws IOException
 	 */
 	public TwitterResponse updateStatus(String text) 
-		throws ParseException, SAXException, ParserConfigurationException, IOException {
+		throws ParseException, SAXException, ParserConfigurationException, 
+			   IOException, TwitterConnectionException {
 		
 		if(text.length() > 140) {
 			throw new IllegalArgumentException("Update text is longer than 140 characters");
 		}
 			
 		String status = "status=" + URLEncoder.encode(text, "UTF-8");
-		URLConnection conn = makeAuthConnection(UPDATE_URL);
+		HttpURLConnection conn = makeAuthConnection(UPDATE_URL);
 		
 		sendPostRequest(conn, status);
 		return new TwitterResponse().parse(getResponseBody(conn));
 	}
 	
-	private URLConnection makeConnection(String resource) 
+	private HttpURLConnection makeConnection(String resource) 
 		throws IOException {
 		
-		URLConnection conn = new URL(resource).openConnection();
+		HttpURLConnection conn = (HttpURLConnection)(new URL(resource).openConnection());
         conn.setDoOutput(true);
 		return conn;
 	}
 	
-	private URLConnection makeAuthConnection(String resource) 
+	private HttpURLConnection makeAuthConnection(String resource) 
 		throws IOException {
 		
 		// Basic HTTP authentication requires the username:password pair to be base64 encoded
 		String credentials = new String(new Base64().encode((username + ":" + password).getBytes()));
 		
-		URLConnection conn = makeConnection(resource);
+		HttpURLConnection conn = makeConnection(resource);
 		conn.setRequestProperty ("Authorization", "Basic " + credentials);
 		return conn;
 	}
 	
-	private String getResponseBody(URLConnection conn) 
-		throws IOException {
-		
-		// [FIXME] Handle HTTP errors from Twitter
-		BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-	        
-		String line;
-	    StringBuffer output = new StringBuffer();
-	        
-	    while ((line = rd.readLine()) != null) {
-	    	output.append(line);
-	    }
-	        
-	    rd.close();
-	        
-	    return output.toString();
+	private String getResponseBody(HttpURLConnection conn) 
+		throws TwitterConnectionException {
+		try {
+			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String line;
+			StringBuffer output = new StringBuffer();
+			while ((line = rd.readLine()) != null) { output.append(line); }
+			rd.close(); 
+			return output.toString();
+		} catch (Exception e) {
+			throw new TwitterConnectionException(conn, e);
+		}
 	}
 		
-	private void sendPostRequest(URLConnection conn, String data) 
-		throws IOException {
-		
-		// [FIXME] Handle HTTP errors from Twitter
-		OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-        wr.write(data);
-        wr.flush();
-        wr.close();
+	private void sendPostRequest(HttpURLConnection conn, String data) 
+		throws TwitterConnectionException {
+		try {
+			OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+			wr.write(data);
+			wr.flush();
+			wr.close();
+		} catch (Exception e) {
+			throw new TwitterConnectionException(conn, e);
+		}
 	}
 }
