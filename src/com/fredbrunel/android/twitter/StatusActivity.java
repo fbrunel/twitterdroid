@@ -28,7 +28,7 @@ public class StatusActivity extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.splash);
-    	((ImageView)findViewById(R.id.splash_logo)).setImageResource(R.drawable.logo);
+    	((ImageView)findViewById(R.id.splash_logo)).setImageResource(R.drawable.twitterdroid);
     }
 
     @Override

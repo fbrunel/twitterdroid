@@ -12,10 +12,10 @@ public final class R {
     }
     public static final class drawable {
         public static final int icon=0x7f020000;
-        public static final int logo=0x7f020001;
-        public static final int refresh_icon=0x7f020002;
-        public static final int twitalert=0x7f020003;
-        public static final int twitmenubar=0x7f020004;
+        public static final int refresh_icon=0x7f020001;
+        public static final int twitalert=0x7f020002;
+        public static final int twitmenubar=0x7f020003;
+        public static final int twitterdroid=0x7f020004;
     }
     public static final class id {
         public static final int config_apply=0x7f050002;
