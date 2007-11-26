@@ -19,6 +19,8 @@
 
        <EditText id="@+id/config_username"
            android:text=""
+           android:textColor="#000"
+		   android:textHiliteColor="#aaa"
            android:padding="3dip"
            android:singleLine="true"/>
    </TableRow>
@@ -32,6 +34,8 @@
 
        <EditText id="@+id/config_password"
            android:text=""
+           android:textColor="#000"
+		   android:textHiliteColor="#aaa"
            android:password="true"
            android:padding="3dip"
            android:singleLine="true" />
@@ -50,11 +54,6 @@
        			android:layout_width="wrap_content"
         		android:layout_height="wrap_content" 
         		android:text="Login" />
-      <!--	       		
-       		<Button id="@+id/cancel" 
-       		    android:layout_width="wrap_content"
-        		android:layout_height="wrap_content" 
-       			android:text="Cancel" /> -->
 	   	</LinearLayout>
    </TableRow>
 
