@@ -18,6 +18,7 @@ import jtwitter.TwitterResponse;
 public class StatusActivity extends Activity {	
 	
 	private static final int MENU_CONFIGURE_ID = Menu.FIRST;
+	
 	private ProgressDialog activeProgress = new ProgressDialog(this);
 	private TwitterService twitter;
 	
@@ -89,9 +90,11 @@ public class StatusActivity extends Activity {
 	private void updateStatusListView(TwitterResponse statuses) {
 		setContentView(R.layout.main);
 	
-		EditText edit = (EditText)findViewById(R.id.status_message);
-		edit.setOnClickListener(messageListener);
-
+		// [FIXME] Should be done once, only the status adapter should be refreshed.
+		findViewById(R.id.status_message).requestFocus();
+		findViewById(R.id.status_message).setOnClickListener(messageListener);
+		findViewById(R.id.status_refresh).setOnClickListener(refreshListener);
+		
 		ListView list = (ListView)findViewById(R.id.status_list);
 		list.setAdapter(new StatusAdapter(this, statuses));
 	}
@@ -106,6 +109,13 @@ public class StatusActivity extends Activity {
 			String text = edit.getText().toString();
 			showSendingProgress();
 			twitter.requestUpdateStatus(text, handler);
+		}
+	};
+	
+	private OnClickListener refreshListener = new OnClickListener() {
+		public void onClick(View v) {
+			showFetchingProgress();
+			twitter.requestFriendsTimeline(handler);
 		}
 	};
 	

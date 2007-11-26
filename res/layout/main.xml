@@ -10,14 +10,25 @@
         android:layout_weight="1.0"
         android:paddingBottom="5px"/>
 
-	<EditText id="@+id/status_message"
+	<LinearLayout
+    	android:orientation="horizontal"
     	android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-		android:textColor="#000"
-		android:textHiliteColor="#aaa"
-        android:hint="@string/status_message_placeholder"
-       	android:maxLength="140"
-        android:scrollHorizontally="true"
-        android:singleLine="true"/>
+    	android:layout_height="wrap_content">
 
+		<ImageButton id="@+id/status_refresh" 
+    		android:layout_width="30px"
+       		android:layout_height="26px"
+       		android:scaleType="center"
+       		android:src="@drawable/refresh_icon"/>
+
+		<EditText id="@+id/status_message"
+    		android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+			android:textColor="#000"
+			android:textHiliteColor="#aaa"
+        	android:hint="@string/status_message_placeholder"
+       		android:maxLength="140"
+        	android:scrollHorizontally="true"
+        	android:singleLine="true"/>
+	</LinearLayout>
 </LinearLayout>
