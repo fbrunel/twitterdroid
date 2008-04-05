@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+ * Copyright (C) 2007 Frederic Brunel.
+ -->
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_width="fill_parent"
+   android:layout_height="fill_parent"
+   android:stretchColumns="1"
+   android:padding="20dp">
+
+   <TableRow>
+       <TextView
+           android:text="Username"
+           android:textStyle="bold"
+           android:textAlign="end"
+           android:padding="3dip"/>
+
+       <EditText id="@+id/config_username"
+           android:text=""
+           android:textColor="#000"
+		   android:textHiliteColor="#aaa"
+           android:padding="3dip"
+           android:singleLine="true"/>
+   </TableRow>
+
+   <TableRow>
+       <TextView
+           android:text="Password"
+           android:textStyle="bold"
+           android:textAlign="end"
+           android:padding="3dip" />
+
+       <EditText id="@+id/config_password"
+           android:text=""
+           android:textColor="#000"
+		   android:textHiliteColor="#aaa"
+           android:password="true"
+           android:padding="3dip"
+           android:singleLine="true" />
+   </TableRow>
+
+   <TableRow>
+ 		<TextView android:text=""/>
+
+		<LinearLayout
+			android:gravity="right"
+    		android:orientation="horizontal"
+    		android:layout_width="fill_parent"
+    		android:layout_height="fill_parent">
+
+       		<Button id="@+id/config_apply" 
+       			android:layout_width="wrap_content"
+        		android:layout_height="wrap_content" 
+        		android:text="Login" />
+	   	</LinearLayout>
+   </TableRow>
+
+</TableLayout>
