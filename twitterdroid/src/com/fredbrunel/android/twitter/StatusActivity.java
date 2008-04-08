@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,7 +42,7 @@ public class StatusActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
     	menu.add(0, MENU_CONFIGURE_ID, R.string.status_configure_menu).
-    		setShortcut(KeyEvent.KEYCODE_0, 0, KeyEvent.KEYCODE_C);
+    		setShortcut('0', 'c');
     	return true;
     }
 
@@ -79,7 +78,7 @@ public class StatusActivity extends Activity {
 					case TwitterService.REQUEST_STATUS_UPDATE: clearEditMessageView();
 				}	
 			} else {
-				showAlert("Twitter Error", ((Exception)msg.obj).getMessage(), "Discard", false);
+				showAlert("Twitter Error", 0, ((Exception)msg.obj).getMessage(), "Discard", false);
 			}
 			hideProgress();
 		}

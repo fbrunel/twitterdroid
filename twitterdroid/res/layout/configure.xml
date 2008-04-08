@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- 
- * Copyright (C) 2007 Frederic Brunel.
+ * Copyright (C) 2007-2008 Frederic Brunel.
  -->
 
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -17,10 +17,10 @@
            android:textAlign="end"
            android:padding="3dip"/>
 
-       <EditText id="@+id/config_username"
+       <EditText android:id="@+id/config_username"
            android:text=""
            android:textColor="#000"
-		   android:textHiliteColor="#aaa"
+		   android:textColorHighlight="#aaa"
            android:padding="3dip"
            android:singleLine="true"/>
    </TableRow>
@@ -32,10 +32,10 @@
            android:textAlign="end"
            android:padding="3dip" />
 
-       <EditText id="@+id/config_password"
+       <EditText android:id="@+id/config_password"
            android:text=""
            android:textColor="#000"
-		   android:textHiliteColor="#aaa"
+		   android:textColorHighlight="#aaa"
            android:password="true"
            android:padding="3dip"
            android:singleLine="true" />
@@ -50,7 +50,7 @@
     		android:layout_width="fill_parent"
     		android:layout_height="fill_parent">
 
-       		<Button id="@+id/config_apply" 
+       		<Button android:id="@+id/config_apply" 
        			android:layout_width="wrap_content"
         		android:layout_height="wrap_content" 
         		android:text="Login" />
