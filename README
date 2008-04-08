@@ -1,6 +1,19 @@
 == TwitterDroid
 
-TwitterDroid is a clone of Twitterific designed for Android.
+TwitterDroid is a clone of Twitterific designed for the Android mobile
+platform.
+
+== Software Requirements
+
+TwitterDroid has been compiles and tested with,
+
+  Eclipse IDE 3.3.2
+  Android SDK release M5 rc15
+  Android Development Tools (ADT) 0.4.0
+
+Follow the URL for complete installation instructions,
+
+  http://code.google.com/android/intro/installing.html
 
 == Credits
 
