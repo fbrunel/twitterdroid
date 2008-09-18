@@ -14,7 +14,6 @@
        <TextView
            android:text="Username"
            android:textStyle="bold"
-           android:textAlign="end"
            android:padding="3dip"/>
 
        <EditText android:id="@+id/config_username"
@@ -29,7 +28,6 @@
        <TextView
            android:text="Password"
            android:textStyle="bold"
-           android:textAlign="end"
            android:padding="3dip" />
 
        <EditText android:id="@+id/config_password"

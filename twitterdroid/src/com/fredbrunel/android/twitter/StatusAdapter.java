@@ -31,14 +31,13 @@ public class StatusAdapter implements ListAdapter {
 			views.put(i, makeUserStatusView(context, statuses.getItemAt(i)));
 	}
 	
-	public boolean areAllItemsSelectable() {
-		return true;
-	}
-
-	public boolean isSelectable(int position) {
-		return true;
-	}
-
+	public boolean isEmpty() { return views.isEmpty(); }
+	public boolean isEnabled(int position) { return true; }
+	public boolean areAllItemsEnabled() { return true; }
+	public boolean hasStableIds() { return true; }
+	public int getViewTypeCount() { return 1; }
+	public int getItemViewType(int position) { return 1; }
+	
 	public int getCount() {
 		return statuses.getNumberOfItems();
 	}
@@ -63,10 +62,6 @@ public class StatusAdapter implements ListAdapter {
 	}
 
 	public void registerDataSetObserver(DataSetObserver observer) {
-	}
-
-	public boolean stableIds() {
-		return true;
 	}
 
 	public void unregisterContentObserver(ContentObserver observer) {
