@@ -1,4 +1,9 @@
-== 0.1.3 -- Avril 8th, 2008
+== 0.1.4 -- October 13th, 2008
+
+ * Port to Android SDK 1.0 release. Use the new default theme, 
+   no changes in the UI.
+   
+== 0.1.3 -- April 8th, 2008
 
  * Port to Android SDK M5 release. Use the new default theme, 
    no changes in the UI.

@@ -8,8 +8,8 @@ platform.
 TwitterDroid has been compiles and tested with,
 
   Eclipse IDE 3.3.2
-  Android SDK release M5 rc15
-  Android Development Tools (ADT) 0.4.0
+  Android SDK release 1.0
+  Android Development Tools (ADT) 0.7.1
 
 Follow the URL for complete installation instructions,
 
@@ -19,4 +19,7 @@ Follow the URL for complete installation instructions,
 
 Copyright Frederic Brunel <fbrunel@gmail.com>
 TwitterDroid logo by Florent Pitoun <florentp@gmail.com>
-JTwitt library by Luksz Grzegorz Maciak
+Port to SDK 1.0 by Joe Bowbeer <http://github.com/joebowbeer>
+
+JTwitt library by Luksz Grzegorz Maciak <http://code.google.com/p/jtwitt/>
+Base64 encoder from the Bouncy Castle library <http://www.bouncycastle.org/licence.html>
