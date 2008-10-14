@@ -19,7 +19,7 @@ public class ConfigActivity extends Activity {
 	
 	public static void requestUpdate(Activity parent) {
     	Intent configure = new Intent(parent, ConfigActivity.class);
-    	parent.startSubActivity(configure, CONFIG_UPDATE_REQUEST);
+    	parent.startActivityForResult(configure, CONFIG_UPDATE_REQUEST);
     	//parent.startActivity(configure);
 	}
 	

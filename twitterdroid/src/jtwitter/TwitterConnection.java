@@ -14,7 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import javax.xml.parsers.ParserConfigurationException;
-import org.apache.commons.codec.binary.Base64;
+import org.bouncycastle.util.encoders.Base64;
 import org.xml.sax.SAXException;
 
 /**
@@ -97,7 +97,7 @@ public class TwitterConnection {
 		throws IOException {
 		
 		// Basic HTTP authentication requires the username:password pair to be base64 encoded
-		String credentials = new String(new Base64().encode((username + ":" + password).getBytes()));
+		String credentials = new String(Base64.encode((username + ":" + password).getBytes()));
 		
 		HttpURLConnection conn = makeConnection(resource);
 		conn.setRequestProperty ("Authorization", "Basic " + credentials);

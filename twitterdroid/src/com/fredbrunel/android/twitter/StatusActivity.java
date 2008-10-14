@@ -1,11 +1,14 @@
 package com.fredbrunel.android.twitter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -18,7 +21,7 @@ public class StatusActivity extends Activity {
 	
 	private static final int MENU_CONFIGURE_ID = Menu.FIRST;
 	
-	private ProgressDialog activeProgress = new ProgressDialog(this);
+	private ProgressDialog activeProgress;
 	private TwitterService twitter;
 	
     // Called when the activity is first created
@@ -41,14 +44,14 @@ public class StatusActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
-    	menu.add(0, MENU_CONFIGURE_ID, R.string.status_configure_menu).
+    	menu.add(Menu.NONE, MENU_CONFIGURE_ID, Menu.NONE, R.string.status_configure_menu).
     		setShortcut('0', 'c');
     	return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(Menu.Item item) {
-        switch (item.getId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
         case MENU_CONFIGURE_ID:
         	ConfigActivity.requestUpdate(this);
             return true;
@@ -59,7 +62,8 @@ public class StatusActivity extends Activity {
 	
     // Handles configuration changes
     
-	protected void onActivityResult(int requestCode, int resultCode, String data, Bundle extras) {
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ConfigActivity.CONFIG_UPDATE_REQUEST && resultCode == RESULT_OK) {
 			showFetchingProgress();
 			Config config = Config.getConfig(this);
@@ -71,6 +75,7 @@ public class StatusActivity extends Activity {
 	// Handles messages in replies from requests to the Twitter Service
 	
 	private Handler handler = new Handler () {
+		@Override
 		public void handleMessage(Message msg) {
 			if (msg.arg1 == TwitterService.RESPONSE_OK) {
 				switch(msg.arg2) {
@@ -78,7 +83,8 @@ public class StatusActivity extends Activity {
 					case TwitterService.REQUEST_STATUS_UPDATE: clearEditMessageView();
 				}	
 			} else {
-				showAlert("Twitter Error", 0, ((Exception)msg.obj).getMessage(), "Discard", false);
+				String message = ((Exception) msg.obj).getMessage();
+				new AlertDialog.Builder(StatusActivity.this).setTitle("Twitter Error").setMessage(message).setNegativeButton("Discard", null).setCancelable(false).show();
 			}
 			hideProgress();
 		}
@@ -129,7 +135,10 @@ public class StatusActivity extends Activity {
 	}
 	
 	private void hideProgress() {
-		activeProgress.dismiss();
+		if (activeProgress != null) {
+			activeProgress.dismiss();
+			activeProgress = null;
+		}
 	}
 }
 
