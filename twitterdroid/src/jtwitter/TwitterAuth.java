@@ -8,7 +8,8 @@ import oauth.signpost.exception.OAuthNotAuthorizedException;
 import android.net.Uri;
 
 public class TwitterAuth implements AuthConstants {
-	private String accessKey, accessSecret;
+	private String accessKey = "";
+	private String accessSecret = "";
 	
 	public TwitterAuth(Uri uri) {
 		String verifier = uri.getQueryParameter(OAuth.OAUTH_VERIFIER);
