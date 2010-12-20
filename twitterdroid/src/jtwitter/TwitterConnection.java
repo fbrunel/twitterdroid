@@ -14,26 +14,39 @@ import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import javax.xml.parsers.ParserConfigurationException;
+
+import oauth.signpost.OAuth;
+import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
+import oauth.signpost.commonshttp.CommonsHttpOAuthProvider;
+import oauth.signpost.exception.OAuthCommunicationException;
+import oauth.signpost.exception.OAuthExpectationFailedException;
+import oauth.signpost.exception.OAuthMessageSignerException;
+import oauth.signpost.exception.OAuthNotAuthorizedException;
+
 import org.bouncycastle.util.encoders.Base64;
 import org.xml.sax.SAXException;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * TwitterRequestSender sends http requests to the Twitter web service.
  * @author Lukasz Grzegorz Maciak
  *
  */
-public class TwitterConnection {
+public class TwitterConnection implements AuthConstants {		
+	public static final String PUBLIC_TIMELINE_URL = "http://twitter.com/statuses/public_timeline.xml";
+	public static final String FRIENDS_TIMELINE_URL = "http://twitter.com/statuses/friends_timeline.xml";
+	public static final String UPDATE_URL = "http://twitter.com/statuses/update.xml";
 	
-	private static String PUBLIC_TIMELINE_URL = "http://twitter.com/statuses/public_timeline.xml";
-	private static String FRIENDS_TIMELINE_URL = "http://twitter.com/statuses/friends_timeline.xml";
-	private static String UPDATE_URL = "http://twitter.com/statuses/update.xml";
-
-	private String username;
-	private String password;
+	private String accessKey, accessSecret;
 	
-	public TwitterConnection(String username, String password) {
-		this.username = username;
-		this.password = password;
+	public TwitterConnection(String accessKey, String accessSecret) {
+		this.accessKey = accessKey;
+		this.accessSecret = accessSecret;
 	}
 	
 	/**
@@ -87,20 +100,29 @@ public class TwitterConnection {
 	
 	private HttpURLConnection makeConnection(String resource) 
 		throws IOException {
-		
+
 		HttpURLConnection conn = (HttpURLConnection)(new URL(resource).openConnection());
         conn.setDoOutput(true);
 		return conn;
 	}
-	
+
 	private HttpURLConnection makeAuthConnection(String resource) 
 		throws IOException {
 		
-		// Basic HTTP authentication requires the username:password pair to be base64 encoded
-		String credentials = new String(Base64.encode((username + ":" + password).getBytes()));
-		
 		HttpURLConnection conn = makeConnection(resource);
-		conn.setRequestProperty ("Authorization", "Basic " + credentials);
+		conn.setRequestProperty("Content-Length", "0");
+		conn.setUseCaches(false);
+		
+		try {
+			consumer.sign(conn);
+		} catch (OAuthMessageSignerException e) {
+			e.printStackTrace();
+		} catch (OAuthExpectationFailedException e) {
+			e.printStackTrace();
+		} catch (OAuthCommunicationException e) {
+			e.printStackTrace();
+		}
+
 		return conn;
 	}
 	

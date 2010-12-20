@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ImageView;
 
+import jtwitter.AuthConstants;
+import jtwitter.TwitterAuth;
 import jtwitter.TwitterResponse;
 
 public class StatusActivity extends Activity {	
@@ -22,7 +25,7 @@ public class StatusActivity extends Activity {
 	private static final int MENU_CONFIGURE_ID = Menu.FIRST;
 	
 	private ProgressDialog activeProgress;
-	private TwitterService twitter;
+	private TwitterService twitter = null;
 	
     // Called when the activity is first created
 
@@ -32,11 +35,28 @@ public class StatusActivity extends Activity {
         setContentView(R.layout.splash);
     	((ImageView)findViewById(R.id.splash_logo)).setImageResource(R.drawable.twitterdroid);
     }
-
+    
+	// Handles configuration updates and authorization (if required)
+	
     @Override
-    public void onStart() {
-    	super.onStart();
-    	//ConfigActivity.requestUpdate(this);
+    public void onResume() {
+    	super.onResume();
+    	Uri uri = this.getIntent().getData();
+
+    	if (uri != null && uri.toString().startsWith(AuthConstants.CALLBACK_URL)) {
+    		TwitterAuth auth = new TwitterAuth(uri);
+    		
+			Config config = Config.getConfig(this);
+			config.setAccessKey(auth.getAccessKey());
+			config.setAccessSecret(auth.getAccessSecret());
+    	}
+    	
+    	if (twitter == null) {
+			showFetchingProgress();
+			Config config = Config.getConfig(this);
+			twitter = new TwitterService(config.getAccessKey(), config.getAccessSecret());
+			twitter.requestFriendsTimeline(handler);
+		}
     }
     
     // Handles menu
@@ -59,18 +79,6 @@ public class StatusActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-	
-    // Handles configuration changes
-    
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == ConfigActivity.CONFIG_UPDATE_REQUEST && resultCode == RESULT_OK) {
-			showFetchingProgress();
-			Config config = Config.getConfig(this);
-			twitter = new TwitterService(config.getUsername(), config.getPassword());
-			twitter.requestFriendsTimeline(handler);
-		}
-	}
 	
 	// Handles messages in replies from requests to the Twitter Service
 	
