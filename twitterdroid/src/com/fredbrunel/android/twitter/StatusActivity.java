@@ -3,7 +3,6 @@ package com.fredbrunel.android.twitter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -57,12 +56,12 @@ public class StatusActivity extends Activity {
         	return;
     	}
     	
-    	if (twitter == null) {
-			showFetchingProgress();
-			
+    	if (twitter == null) {			
 			twitter = new TwitterService(config.getAccessKey(), config.getAccessSecret());
-			twitter.requestFriendsTimeline(handler);
 		}
+
+    	showFetchingProgress();
+		twitter.requestFriendsTimeline(handler);
     }
     
     // Handles menu

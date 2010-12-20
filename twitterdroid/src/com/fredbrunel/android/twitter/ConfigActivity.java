@@ -39,5 +39,7 @@ public class ConfigActivity extends Activity implements AuthConstants {
     	} catch (OAuthCommunicationException e) {
     		e.printStackTrace();
     	}
+    	
+    	finish();
     }
 }

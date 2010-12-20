@@ -32,7 +32,8 @@ public class TwitterConnection implements AuthConstants {
 	public static final String FRIENDS_TIMELINE_URL = "http://api.twitter.com/1/statuses/friends_timeline.xml";
 	public static final String UPDATE_URL = "http://api.twitter.com/1/statuses/update.xml";
 	
-	private String accessKey, accessSecret;
+	private String accessKey = "";
+	private String accessSecret = "";
 	
 	public TwitterConnection(String accessKey, String accessSecret) {
 		this.accessKey = accessKey;
