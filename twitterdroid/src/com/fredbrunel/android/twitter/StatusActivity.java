@@ -51,8 +51,10 @@ public class StatusActivity extends Activity {
 			config.setAccessKey(auth.getAccessKey());
 			config.setAccessSecret(auth.getAccessSecret());
 			config.commit();
+			
     	} else if (!config.authorized()) {
         	ConfigActivity.requestUpdate(this);
+        	return;
     	}
     	
     	if (twitter == null) {
