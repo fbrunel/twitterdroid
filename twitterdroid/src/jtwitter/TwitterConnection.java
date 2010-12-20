@@ -28,9 +28,9 @@ import org.xml.sax.SAXException;
  *
  */
 public class TwitterConnection implements AuthConstants {		
-	public static final String PUBLIC_TIMELINE_URL = "http://twitter.com/statuses/public_timeline.xml";
-	public static final String FRIENDS_TIMELINE_URL = "http://twitter.com/statuses/friends_timeline.xml";
-	public static final String UPDATE_URL = "http://twitter.com/statuses/update.xml";
+	public static final String PUBLIC_TIMELINE_URL = "http://api.twitter.com/1/statuses/public_timeline.xml";
+	public static final String FRIENDS_TIMELINE_URL = "http://api.twitter.com/1/statuses/friends_timeline.xml";
+	public static final String UPDATE_URL = "http://api.twitter.com/1/statuses/update.xml";
 	
 	private String accessKey, accessSecret;
 	

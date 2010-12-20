@@ -41,19 +41,23 @@ public class StatusActivity extends Activity {
     @Override
     public void onResume() {
     	super.onResume();
+    	
+		Config config = Config.getConfig(this);
     	Uri uri = this.getIntent().getData();
 
     	if (uri != null && uri.toString().startsWith(AuthConstants.CALLBACK_URL)) {
     		TwitterAuth auth = new TwitterAuth(uri);
     		
-			Config config = Config.getConfig(this);
 			config.setAccessKey(auth.getAccessKey());
 			config.setAccessSecret(auth.getAccessSecret());
+			config.commit();
+    	} else if (!config.authorized()) {
+        	ConfigActivity.requestUpdate(this);
     	}
     	
     	if (twitter == null) {
 			showFetchingProgress();
-			Config config = Config.getConfig(this);
+			
 			twitter = new TwitterService(config.getAccessKey(), config.getAccessSecret());
 			twitter.requestFriendsTimeline(handler);
 		}

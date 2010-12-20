@@ -41,6 +41,13 @@ public class Config {
 
 	public void setAccessSecret(String accessSecret) {
 		editor.putString("accessSecret", accessSecret);
-	}	
+	}
+	
+	public boolean authorized() {
+		if ((getAccessKey() != "") && (getAccessSecret() != ""))
+			return true;
+		else
+			return false;
+	}
 	
 }
