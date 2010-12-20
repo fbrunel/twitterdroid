@@ -1,7 +1,7 @@
 package jtwitter;
 
-import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
-import oauth.signpost.commonshttp.CommonsHttpOAuthProvider;
+import oauth.signpost.basic.DefaultOAuthConsumer;
+import oauth.signpost.basic.DefaultOAuthProvider;
 
 public interface AuthConstants {
 	public static final String CONSUMER_KEY = "iUwjRSp5vzqSFMWfbNysA";
@@ -14,8 +14,8 @@ public interface AuthConstants {
 	public static final String CALLBACK_URL = "OauthTwitter://twitter";
 	public static final String PREFERENCE_FILE = "twitter_oauth.prefs";
 
-	public static CommonsHttpOAuthConsumer consumer = new CommonsHttpOAuthConsumer(
+	public static DefaultOAuthConsumer consumer = new DefaultOAuthConsumer(
 			CONSUMER_KEY, CONSUMER_SECRET);
-	public static CommonsHttpOAuthProvider provider = new CommonsHttpOAuthProvider(
+	public static DefaultOAuthProvider provider = new DefaultOAuthProvider(
 			REQUEST_URL, ACCESS_TOKEN_URL, AUTH_URL);
 }

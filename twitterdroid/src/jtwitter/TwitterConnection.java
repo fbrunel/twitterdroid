@@ -100,7 +100,6 @@ public class TwitterConnection implements AuthConstants {
 		throws IOException {
 		
 		HttpURLConnection conn = makeConnection(resource);
-		conn.setRequestProperty("Content-Length", "0");
 		conn.setUseCaches(false);
 		
 		try {
