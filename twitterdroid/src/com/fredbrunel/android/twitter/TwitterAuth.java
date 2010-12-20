@@ -1,4 +1,5 @@
-package jtwitter;
+package com.fredbrunel.android.twitter;
+
 
 import oauth.signpost.OAuth;
 import oauth.signpost.exception.OAuthCommunicationException;

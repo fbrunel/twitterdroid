@@ -15,8 +15,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ImageView;
 
-import jtwitter.AuthConstants;
-import jtwitter.TwitterAuth;
 import jtwitter.TwitterResponse;
 
 public class StatusActivity extends Activity {	

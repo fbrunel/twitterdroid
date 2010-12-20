@@ -1,4 +1,4 @@
-package jtwitter;
+package com.fredbrunel.android.twitter;
 
 import oauth.signpost.basic.DefaultOAuthConsumer;
 import oauth.signpost.basic.DefaultOAuthProvider;

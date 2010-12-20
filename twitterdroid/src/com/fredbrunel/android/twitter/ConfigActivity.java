@@ -4,7 +4,6 @@ import oauth.signpost.exception.OAuthCommunicationException;
 import oauth.signpost.exception.OAuthExpectationFailedException;
 import oauth.signpost.exception.OAuthMessageSignerException;
 import oauth.signpost.exception.OAuthNotAuthorizedException;
-import jtwitter.AuthConstants;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;

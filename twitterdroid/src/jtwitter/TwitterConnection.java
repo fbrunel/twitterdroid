@@ -22,6 +22,8 @@ import oauth.signpost.exception.OAuthMessageSignerException;
 
 import org.xml.sax.SAXException;
 
+import com.fredbrunel.android.twitter.AuthConstants;
+
 /**
  * TwitterRequestSender sends http requests to the Twitter web service.
  * @author Lukasz Grzegorz Maciak
