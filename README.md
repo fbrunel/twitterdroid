@@ -1,9 +1,10 @@
-== TwitterDroid
+TwitterDroid
+============
 
 TwitterDroid is a clone of Twitterific designed for the Android mobile
 platform.
 
-== Software Requirements
+## Software Requirements
 
 TwitterDroid has been compiled and tested with,
 
@@ -15,7 +16,14 @@ Follow the URL for complete installation instructions,
 
   http://code.google.com/android/intro/installing.html
 
-== Credits
+## Twitter OAuth Credentials
+
+You'll need to register an application with Twitter at http://twitter.com/apps 
+in order obtain a consumer key and a consumer secret. Make sure to select
+'Browser' for your application type (use any callback URL; we will be
+supplying our own). Paste the credentials into AuthConstants.java.
+
+## Credits
 
 Copyright Frederic Brunel <fbrunel@gmail.com>
 TwitterDroid logo by Florent Pitoun <florentp@gmail.com>

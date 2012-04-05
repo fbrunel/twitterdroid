@@ -17,8 +17,8 @@ public class TwitterService {
 	
 	private TwitterConnection twitter;
 	
-	public TwitterService(String username, String password) {
-		this.twitter = new TwitterConnection(username, password);
+	public TwitterService(String accessKey, String accessSecret) {
+		this.twitter = new TwitterConnection(accessKey, accessSecret);
 	}
 	
 	public void requestFriendsTimeline(Handler response) {

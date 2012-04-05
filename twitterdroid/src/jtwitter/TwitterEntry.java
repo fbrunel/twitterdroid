@@ -19,14 +19,14 @@ public class TwitterEntry {
 	public static final String TEXT = "text";
 	
 	private Date createdAt;
-	private int id;
+	private long id;
 	private String text;
 	private TwitterUser user;
 	
 	//This is currently the date format used by twitter
 	public static final String TWITTER_DATE_FORMAT = "EEE MMM dd kk:mm:ss Z yyyy";
 	
-	public TwitterEntry(Date createdAt, int id, String text, TwitterUser user) {
+	public TwitterEntry(Date createdAt, long id, String text, TwitterUser user) {
 		super();
 		this.createdAt = createdAt;
 		this.id = id;
@@ -48,12 +48,12 @@ public class TwitterEntry {
 		this.createdAt = createdAt;
 	}
 
-	public int getId()
+	public long getId()
 	{
 		return id;
 	}
 
-	public void setId(int id)
+	public void setId(long id)
 	{
 		this.id = id;
 	}
@@ -83,7 +83,7 @@ public class TwitterEntry {
 	{
 		final int PRIME = 31;
 		int result = 1;
-		result = PRIME * result + id;
+		result = PRIME * result + (int) id;
 		return result;
 	}
 
@@ -108,7 +108,7 @@ public class TwitterEntry {
 		if(key.equals(CREATED_AT))
 			this.setCreatedAt(makeDate(value));
 		else if(key.equals(ID))
-			this.setId(Integer.parseInt(value));
+			this.setId(Long.parseLong(value));
 		else if (key.equals(TEXT))
 			this.setText(value);
 		else if (key.equals(TwitterUser.NAME))

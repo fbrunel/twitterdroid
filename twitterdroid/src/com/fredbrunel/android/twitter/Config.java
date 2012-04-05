@@ -27,20 +27,27 @@ public class Config {
 	
 	//
 	
-	public String getUsername() {
-		return settings.getString("username", "");
+	public String getAccessKey() {
+		return settings.getString("accessKey", "");
 	}
 	
-	public void setUsername(String username) {
-		editor.putString("username", username);
+	public void setAccessKey(String accessKey) {
+		editor.putString("accessKey", accessKey);
 	}
 	
-	public String getPassword() {
-		return settings.getString("password", "");
+	public String getAccessSecret() {
+		return settings.getString("accessSecret", "");
 	}
 
-	public void setPassword(String password) {
-		editor.putString("password", password);
-	}	
+	public void setAccessSecret(String accessSecret) {
+		editor.putString("accessSecret", accessSecret);
+	}
+	
+	public boolean authorized() {
+		if ((getAccessKey() != "") && (getAccessSecret() != ""))
+			return true;
+		else
+			return false;
+	}
 	
 }
