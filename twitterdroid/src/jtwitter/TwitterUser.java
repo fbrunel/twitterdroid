@@ -25,7 +25,7 @@ public class TwitterUser {
 	public static final String URL = "url";
 	public static final String IS_PROTECTED = "protected";
 	
-	private int id;
+	private long id;
 	private String name;
 	private String screenName;
 	private String location;
@@ -34,7 +34,7 @@ public class TwitterUser {
 	private URL url;
 	private boolean isProtected;
 	
-	public TwitterUser(int id, String name, String screenName, String location, String description, String profileImageURL, String url, boolean isProtected) 
+	public TwitterUser(long id, String name, String screenName, String location, String description, String profileImageURL, String url, boolean isProtected) 
 		throws MalformedURLException {
 		
 		this.id = id;
@@ -58,11 +58,11 @@ public class TwitterUser {
 		this.description = description;
 	}
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	
@@ -126,7 +126,7 @@ public class TwitterUser {
 	public int hashCode() {
 		final int PRIME = 31;
 		int result = 1;
-		result = PRIME * result + id;
+		result = PRIME * result + (int) id;
 		return result;
 	}
 
